@@ -31,12 +31,32 @@ public class TreeVisualizer extends Application {
         public Node getRoot() {
             return root;
         }
-    }
 
 
-        public void insert(char letter, String morseCode) {
-            // Inserir lógica de inserção: ponto (.) para a esquerda e traço (-) para a direita
+    public void insert(char letter, String morseCode) {
+        Node current = root;
+
+        for (int i = 0; i < morseCode.length(); i++) {
+            char symbol = morseCode.charAt(i);
+
+            if (symbol == '.') {
+                // esquerda caso .
+                if (current.left == null) {
+                    current.left = new Node(' ');
+                }
+                current = current.left;
+            } else if (symbol == '-') {
+                //direita caso -
+                if (current.right == null) {
+                    current.right = new Node(' ');
+                }
+                current = current.right;
+            }
         }
+
+
+        current.letter = letter;
+    }
 
         // Adicione métodos para codificar e decodificar código morse
 
