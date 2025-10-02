@@ -14,7 +14,7 @@ public class Operations {
 
            tree.insert(letter, morse);
            System.out.println("Letra '" + letter + "' inserida sem erros durante a execução.");
-       } catch (IllegalArgumentException e) {
+       } catch (IllegalArgumentException | IllegalStateException e) {
            System.out.println(e.getMessage());
        }
 
