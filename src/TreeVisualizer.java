@@ -1,142 +1,126 @@
-import javafx.application.Application;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.geom.Ellipse2D;
 
-public class TreeVisualizer extends Application {
+/**
+ * Visualizador Swing para a sua classe Tree.
+ * Uso: TreeVisualizerSwing.show(tree);  // abre a janela
+ */
+public final class TreeVisualizer {
 
-    // Classe Node para a árvore binária de busca
-    static class Node {
-        char letter;
-        Node left, right;
+    private TreeVisualizer() { /* util class */ }
 
-        public Node(char letter) {
-            this.letter = letter;
-            this.left = null;
-            this.right = null;
-        }
+    /** Abre a janela com título padrão. */
+    public static void show(Tree tree) {
+        show(tree, "Visualizador de Árvore Binária");
     }
 
-    // Classe da árvore binária de busca
-    static class MorseBST {
-        private Node root;
+    /** Abre a janela com título customizado. */
+    public static void show(Tree tree, String title) {
+        if (tree == null) throw new IllegalArgumentException("tree == null");
 
-        public MorseBST() {
-            root = new Node(' '); // raiz neutra
-        }
+        // Cria painel de desenho baseado na sua árvore
+        TreePanel panel = new TreePanel(tree);
 
-        public Node getRoot() {
-            return root;
-        }
+        // Coloca em scroll pane para árvores grandes
+        JScrollPane scroll = new JScrollPane(panel,
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-
-    public void insert(char letter, String morseCode) {
-        Node current = root;
-
-        for (int i = 0; i < morseCode.length(); i++) {
-            char symbol = morseCode.charAt(i);
-
-            if (symbol == '.') {
-                // esquerda caso .
-                if (current.left == null) {
-                    current.left = new Node(' ');
-                }
-                current = current.left;
-            } else if (symbol == '-') {
-                //direita caso -
-                if (current.right == null) {
-                    current.right = new Node(' ');
-                }
-                current = current.right;
-            }
-        }
-
-
-        current.letter = letter;
+        JFrame frame = new JFrame(title);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        frame.setContentPane(scroll);
+        frame.pack();
+        frame.setLocationByPlatform(true);
+        frame.setVisible(true);
     }
 
-        // Adicione métodos para codificar e decodificar código morse
+    /** Painel que desenha a árvore. */
+    private static class TreePanel extends JPanel {
+        private final Tree tree;
 
-        // Calcula a altura da árvore
-        public int getHeight() {
-            return getHeight(root);
+        // Estilo/desenho
+        private static final int NODE_DIAM = 34;     // diâmetro do círculo
+        private static final int LEVEL_VSPACE = 120; // distância vertical entre níveis
+        private static final int MIN_HSPACE = 40;    // base de espaçamento horizontal
+        private static final int PADDING = 40;       // margem interna
+
+        TreePanel(Tree tree) {
+            this.tree = tree;
+            // Define um tamanho preferido com base na altura
+            int h = getHeight(tree.getRoot());
+            int prefH = Math.max(200, PADDING * 2 + 60 + (h <= 1 ? 0 : (h - 1) * LEVEL_VSPACE));
+            int prefW = Math.max(300, PADDING * 2 + (int) Math.pow(2, Math.max(1, h)) * MIN_HSPACE);
+            setPreferredSize(new Dimension(prefW, prefH));
+            setBackground(Color.WHITE);
         }
 
-        private int getHeight(Node node) {
-            if (node == null) {
-                return 0;
-            }
-            return 1 + Math.max(getHeight(node.left), getHeight(node.right));
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Node root = tree.getRoot();
+            if (root == null) return;
+
+            Graphics2D g2 = (Graphics2D) g.create();
+            // Anti-aliasing para ficar mais lisinho
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setStroke(new BasicStroke(2f));
+            g2.setColor(Color.BLACK);
+
+            //int h = getHeight(root);
+            // Ponto inicial (topo central)
+            double startX = getWidth() / 2.0;
+            double startY = PADDING + NODE_DIAM;
+
+            // Offset horizontal inicial (metade da largura útil / 2)
+            double xOffset = Math.max(MIN_HSPACE, (getWidth() - 2.0 * PADDING) / 4.0);
+            drawNode(g2, root, startX, startY, xOffset, 1);
+
+            g2.dispose();
         }
 
-        public void drawTree(Canvas canvas) {
-            GraphicsContext gc = canvas.getGraphicsContext2D();
-            gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-            gc.setStroke(Color.BLACK);
-            gc.setLineWidth(2);
+        /** Desenha recursivamente: círculo, letra e arestas. */
+        private void drawNode(Graphics2D g2, Node node, double x, double y, double xOffset, int level) {
+            if (node == null) return;
 
-            // Começa o desenho da árvore na raiz
-            drawNode(gc, root, canvas.getWidth() / 2, 40, canvas.getWidth() / 4, 1);
-        }
+            // Filhos: primeiro desenha as linhas para manter por baixo dos nós
+            double childY = y + LEVEL_VSPACE;
 
-        private void drawNode(GraphicsContext gc, Node node, double x, double y, double xOffset, int level) {
-            if (node == null) {
-                return;
-            }
-
-            // Desenha um círculo ao redor do nó
-            gc.setStroke(Color.BLACK);
-            gc.strokeOval(x - 15, y - 15, 30, 30); // Desenha o círculo com raio 15
-
-            // Desenha a letra dentro do círculo
-            gc.strokeText(String.valueOf(node.letter == ' ' ? ' ' : node.letter), x - 5, y + 5);
-
-            // Desenho das linhas para os nós filhos
             if (node.left != null) {
-                double newX = x - xOffset;
-                double newY = y + 120; // Aumentei o espaçamento vertical
-                gc.strokeLine(x, y + 15, newX, newY - 15); // Linha entre o nó atual e o filho à esquerda
-                drawNode(gc, node.left, newX, newY, xOffset / 2, level + 1);
+                double leftX = x - xOffset;
+                g2.drawLine((int) x, (int) (y + NODE_DIAM / 2.0), (int) leftX, (int) (childY - NODE_DIAM / 2.0));
+                drawNode(g2, node.left, leftX, childY, Math.max(MIN_HSPACE / 2.0, xOffset / 2.0), level + 1);
             }
 
             if (node.right != null) {
-                double newX = x + xOffset;
-                double newY = y + 120; // Aumentei o espaçamento vertical
-                gc.strokeLine(x, y + 15, newX, newY - 15); // Linha entre o nó atual e o filho à direita
-                drawNode(gc, node.right, newX, newY, xOffset / 2, level + 1);
+                double rightX = x + xOffset;
+                g2.drawLine((int) x, (int) (y + NODE_DIAM / 2.0), (int) rightX, (int) (childY - NODE_DIAM / 2.0));
+                drawNode(g2, node.right, rightX, childY, Math.max(MIN_HSPACE / 2.0, xOffset / 2.0), level + 1);
             }
+
+            // Desenha o nó (círculo)
+            double r = NODE_DIAM;
+            Shape circle = new Ellipse2D.Double(x - r / 2.0, y - r / 2.0, r, r);
+            g2.setColor(Color.WHITE);
+            g2.fill(circle);
+            g2.setColor(Color.BLACK);
+            g2.draw(circle);
+
+            // Desenha a letra (ou espaço em branco como '·' para visual)
+            String text = node.letter == ' ' ? " " : String.valueOf(node.letter);
+            // Centraliza o texto aproximadamente
+            FontMetrics fm = g2.getFontMetrics();
+            int tx = (int) (x - fm.stringWidth(text) / 2.0);
+            int ty = (int) (y + fm.getAscent() / 2.5);
+            g2.drawString(text, tx, ty);
         }
-    }
 
-    @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Visualizador de Árvore Binária");
-
-        MorseBST bst = new MorseBST();
-
-        // Adicione o alfabeto com seus códigos Morse
-
-
-        // Inicialização de Janela
-        int height = bst.getHeight();
-        int canvasHeight = 100 + height * 100;
-        int canvasWidth = (int) Math.pow(2, height) * 40;
-
-        Canvas canvas = new Canvas(canvasWidth, canvasHeight);
-        bst.drawTree(canvas);
-
-        Group root = new Group();
-        root.getChildren().add(canvas);
-
-        Scene scene = new Scene(root, canvasWidth, canvasHeight);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
+        /** Altura da árvore (número de níveis). */
+        private int getHeight(Node n) {
+            if (n == null) return 0;
+            int lh = getHeight(n.left);
+            int rh = getHeight(n.right);
+            return 1 + Math.max(lh, rh);
+        }
     }
 }

@@ -4,10 +4,13 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        exhibitMenu();
+
+        Tree tree = new Tree();
+
+        exhibitMenu(tree);
     }
 
-    private static void exhibitMenu() {
+    private static void exhibitMenu(Tree tree) {
         Scanner scanner = new Scanner(System.in);
 
         int selectedOption = -1;
@@ -26,6 +29,7 @@ public class Main {
                 switch (selectedOption) {
                     case 1:
                         // Inserir
+                        Operations.insert(tree, scanner);
 
                         break;
                     case 2:
@@ -38,6 +42,7 @@ public class Main {
                         break;
                     case 4:
                         //  Exibir a Árvore Binária
+                        Operations.exhibitTree(tree);
 
                         break;
                     case 0:
