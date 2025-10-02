@@ -41,8 +41,7 @@ public class Tree {
             current.letter = letter;
             return;
         }
-
-        /*
+        /*a
          Obtém o carácter atual e verifica se ele é ponto ou traço e envia para uma direção.
          Caso não a posição não exista, preenche temporáriamente com um espaço em branco.
          */
@@ -57,5 +56,27 @@ public class Tree {
             throw new IllegalArgumentException("Símbolo morse inválido: '" + symbol + "' em " + morse);
         }
     }
+    public char search(String morse) {
+        if (morse == null || morse.trim().isEmpty()) {
+            throw new IllegalArgumentException("codigo morse vazio");
+        }
+        return searchRecursive(root, morse.trim(), 0);
+    }
 
-}
+    private char searchRecursive(Node current, String morse, int index) {
+        if (current == null) return '?';
+
+        if (index == morse.length()) {
+            return current.letter;
+        }
+        char symbol = morse.charAt(index);
+        if (symbol == '.') {
+            return searchRecursive(current.left, morse, index + 1);
+        } else if (symbol == '-') {
+            return searchRecursive(current.right, morse, index + 1);
+        }else {
+            throw new IllegalArgumentException("Simbolo invalido" + symbol);
+        }
+
+        }
+    }
