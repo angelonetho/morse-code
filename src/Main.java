@@ -43,7 +43,7 @@ public class Main {
                         System.out.println("Operação inválida. Tente novamente.");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Input inválido. Tente novamente.");
+                System.out.println("Entrada inválida. Tente novamente.");
 
                 scanner.nextLine(); // Limpa o buffer do scanner
                 selectedOption = -1;
