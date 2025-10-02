@@ -17,6 +17,7 @@ public class Main {
             System.out.println("1 - Inserir");
             System.out.println("2 - Codificar");
             System.out.println("3 - Decodificar");
+            System.out.println("4 - Exibir Árvore Binária de Busca");
             System.out.println("0 - Sair");
 
             try {
@@ -33,6 +34,10 @@ public class Main {
                         break;
                     case 3:
                         // Decodificar
+
+                        break;
+                    case 4:
+                        //  Exibir a Árvore Binária
 
                         break;
                     case 0:
