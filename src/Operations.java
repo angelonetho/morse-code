@@ -4,19 +4,19 @@ public class Operations {
 
     public static void insert(Tree tree, Scanner scanner) {
 
-       try {
-           System.out.println("Digite a letra a ser inserida:");
-           char letter = scanner.next().toUpperCase().charAt(0);
-           scanner.nextLine();
+        try {
+            System.out.println("Digite a letra a ser inserida:");
+            char letter = scanner.next().toUpperCase().charAt(0);
+            scanner.nextLine();
 
-           System.out.println("Digite o código morse para a letra:");
-           String morse = scanner.nextLine();
+            System.out.println("Digite o código morse para a letra:");
+            String morse = scanner.nextLine();
 
-           tree.insert(letter, morse);
-           System.out.println("Letra '" + letter + "' inserida sem erros durante a execução.");
-       } catch (IllegalArgumentException | IllegalStateException e) {
-           System.out.println(e.getMessage());
-       }
+            tree.insert(letter, morse);
+            System.out.println("Letra '" + letter + "' inserida sem erros durante a execução.");
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            System.out.println(e.getMessage());
+        }
 
     }
 
@@ -43,7 +43,7 @@ public class Operations {
             StringBuilder result = new StringBuilder();
             String[] words = encodedMessage.split("/");
 
-            for (String word : words){
+            for (String word : words) {
                 String[] letters = word.split("\\s+");
                 for (String morseCode : letters) {
                     char decoded = tree.search(morseCode);
@@ -57,36 +57,52 @@ public class Operations {
         }
     }
 
-    private static String encodeLetter(Node node, char target, String path){
-        if (node == null) return null;
-        if (node.letter == target) return path;
+    private static String encodeLetter(Node node, char targetLetter, String path) {
+        if (node == null) throw new IllegalArgumentException("Letra '" + targetLetter + "' não encontrada.");
+        if (node.letter == targetLetter) return path;
 
-        String left = encodeLetter(node.left, target, path + ".");
+        String left = encodeLetter(node.left, targetLetter, path + ".");
         if (left != null) return left;
 
-        return encodeLetter(node.right, target, path + "-");
+        return encodeLetter(node.right, targetLetter, path + "-");
     }
 
-    public static void encode(Tree tree, Scanner scanner){
+    public static void encode(Tree tree, Scanner scanner) {
         System.out.println("Escreva seu texto para codifica-lo: ");
-        String text = scanner.nextLine().toUpperCase();
 
-        StringBuilder morse = new StringBuilder();
-        for (char c : text.toCharArray()) {
-            if (c == ' '){
-                morse.append("  "); // separacao
-            } else {
-                String code = encodeLetter(tree.getRoot(), c, "");
-                if (code != null) {
-                    morse.append(code).append(" ");
+        String messageToEncode = scanner.nextLine().trim().toUpperCase();
+
+        if (messageToEncode.isEmpty()) {
+            System.out.println("Entrada vazia. Tente novamente.");
+            return;
+        }
+
+        StringBuilder encodedMessage = new StringBuilder();
+
+        try {
+
+            for (char c : messageToEncode.toCharArray()) {
+
+                if (c == ' ') {
+                    encodedMessage.append("  ");
+
                 } else {
-                    morse.append("?"); // nao encontrado
+                    String code = encodeLetter(tree.getRoot(), c, ""); // Busca recursivamente a letra
+
+                    encodedMessage.append(code).append(" ");
                 }
             }
+
+            System.out.println("Resultado Decodificação: " + encodedMessage.toString().trim());
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("A operação não pode ser concluída: " + e.getMessage());
         }
-        System.out.println("Resultado Decodificacao: " + morse.toString().trim());
+
     }
+
     public static void insertAll(Tree tree) {
-        tree.insertAllLetters(); // chama o metodo da classe Tree
+        tree.insertAllLetters();
+        System.out.println("Todas as letras foram inseridas!");
     }
 }

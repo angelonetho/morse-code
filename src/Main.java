@@ -35,10 +35,12 @@ public class Main {
 
                         break;
                     case 2:
+                        // Codificar
                         Operations.encode(tree, scanner);
 
                         break;
                     case 3:
+                        // Decodificar
                         Operations.decode(tree, scanner);
 
                         break;
@@ -49,9 +51,8 @@ public class Main {
                         break;
 
                     case 5:
-                        // cheatcode
+                        // Godmode
                         Operations.insertAll(tree);
-                        System.out.println("Todas as letras foram inseridas!");
 
                         break;
 
