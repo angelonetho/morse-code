@@ -65,7 +65,7 @@ public class Tree {
     }
 
     private char searchRecursive(Node current, String morse, int index) {
-        if (current == null) throw new IllegalArgumentException("Símbolo morse '" + morse + "' não encontrado.");
+        if (current == null) return ' ';
 
         if (index == morse.length()) {
             return current.letter;
@@ -80,5 +80,34 @@ public class Tree {
             throw new IllegalArgumentException("Símbolo morse inválido: '" + symbol + "' em " + morse);
         }
 
+    }
+    public void insertAllLetters() {
+        // Letras A-Z
+        insert('A', ".-");
+        insert('B', "-...");
+        insert('C', "-.-.");
+        insert('D', "-..");
+        insert('E', ".");
+        insert('F', "..-.");
+        insert('G', "--.");
+        insert('H', "....");
+        insert('I', "..");
+        insert('J', ".---");
+        insert('K', "-.-");
+        insert('L', ".-..");
+        insert('M', "--");
+        insert('N', "-.");
+        insert('O', "---");
+        insert('P', ".--.");
+        insert('Q', "--.-");
+        insert('R', ".-.");
+        insert('S', "...");
+        insert('T', "-");
+        insert('U', "..-");
+        insert('V', "...-");
+        insert('W', ".--");
+        insert('X', "-..-");
+        insert('Y', "-.--");
+        insert('Z', "--..");
     }
 }

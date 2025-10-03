@@ -21,11 +21,12 @@ public class Main {
             System.out.println("2 - Codificar");
             System.out.println("3 - Decodificar");
             System.out.println("4 - Exibir Árvore Binária de Busca");
-            System.out.println("5 - Inserir Todas as Letras");
+            System.out.println("5 - Inserir todas as letras");
             System.out.println("0 - Sair");
 
             try {
                 selectedOption = scanner.nextInt();
+                scanner.nextLine();
 
                 switch (selectedOption) {
                     case 1:
@@ -34,12 +35,10 @@ public class Main {
 
                         break;
                     case 2:
-                        // Codificar
                         Operations.encode(tree, scanner);
 
                         break;
                     case 3:
-                        scanner.nextLine();
                         Operations.decode(tree, scanner);
 
                         break;
@@ -48,6 +47,14 @@ public class Main {
                         Operations.exhibitTree(tree);
 
                         break;
+
+                    case 5:
+                        // cheatcode
+                        Operations.insertAll(tree);
+                        System.out.println("Todas as letras foram inseridas!");
+
+                        break;
+
                     case 0:
                         System.out.println("bye.");
 

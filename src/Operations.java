@@ -43,6 +43,39 @@ public class Operations {
         }
     }
 
+    public static void decode(Tree tree, Scanner scanner) {
+
+        try {
+            System.out.println("Digite o código morse: (utilize ' ' entre as letras e '/' entre palavras)");
+            String encodedMessage = scanner.nextLine().trim();
+
+            if (encodedMessage.isEmpty()) {
+                System.out.println("Entrada vazia. Tente novamente.");
+                return;
+            }
+
+            if (!encodedMessage.matches("^[.\\- /]+$")) {
+                System.out.println("A mensagem criptografada pode conter apenas caracteres de . e - e /.");
+                return;
+            }
+
+            StringBuilder result = new StringBuilder();
+            String[] words = encodedMessage.split("/");
+
+            for (String word : words){
+                String[] letters = word.split("\\s+");
+                for (String morseCode : letters) {
+                    char decoded = tree.search(morseCode);
+                    result.append(decoded);
+                }
+            }
+
+            System.out.println("Mensagem descriptografada: " + result.toString().trim());
+        } catch (IllegalArgumentException e) {
+            System.out.println("A operação não pode ser concluída: " + e.getMessage());
+        }
+    }
+
     private static String encodeLetter(Node node, char target, String path){
         if (node == null) return null;
         if (node.letter == target) return path;
@@ -71,5 +104,8 @@ public class Operations {
             }
         }
         System.out.println("Resultado Decodificacao: " + morse.toString().trim());
+    }
+    public static void insertAll(Tree tree) {
+        tree.insertAllLetters(); // chama o metodo da classe Tree
     }
 }
