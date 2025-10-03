@@ -42,4 +42,65 @@ public class Operations {
             System.out.println("Erro: " + e.getMessage());
         }
     }
+
+    public static void decode(Tree tree, Scanner scanner) {
+
+        try {
+            System.out.println("Digite o código morse: (utilize ' ' entre as letras e '/' entre palavras)");
+            String encodedMessage = scanner.nextLine().trim();
+
+            if (encodedMessage.isEmpty()) {
+                System.out.println("Entrada vazia. Tente novamente.");
+                return;
+            }
+
+            if (!encodedMessage.matches("^[.\\- /]+$")) {
+                System.out.println("A mensagem criptografada pode conter apenas caracteres de . e - e /.");
+                return;
+            }
+
+            StringBuilder result = new StringBuilder();
+            String[] words = encodedMessage.split("/");
+
+            for (String word : words){
+                String[] letters = word.split("\\s+");
+                for (String morseCode : letters) {
+                    char decoded = tree.search(morseCode);
+                    result.append(decoded);
+                }
+                result.append(" ");
+            }
+
+            System.out.println("Mensagem descriptografada: " + result.toString().trim());
+        } catch (IllegalArgumentException e) {
+            System.out.println("A operação não pode ser concluída: " + e.getMessage());
+        }
+
+    }
+
+    // cheatcode
+//    private void insertAllLetters() {
+//        // Letras A até Z em Morse
+//        insert(".-", 'A');
+//        insert("-...", 'B');
+//        insert("-.-.", 'C');
+//        insert("-..", 'D');
+//        insert(".", 'E');
+//        insert("..-.", 'F');
+//        insert("--.", 'G');
+//        insert("....", 'H');
+//        insert("..", 'I');
+//        insert(".---", 'J');
+//        insert("-.-", 'K');
+//        insert(".-..", 'L');
+//        insert("--", 'M');
+//        insert("-.", 'N');
+//        insert("---", 'O');
+//        insert(".--.", 'P');
+//        insert("--.-", 'Q');
+//        insert(".-.", 'R');
+//        insert("...", 'S');
+//        insert("-", 'T');
+//        insert("..-", 'U');
+//        insert("...-", 'V');
 }
