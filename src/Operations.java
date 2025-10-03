@@ -43,64 +43,33 @@ public class Operations {
         }
     }
 
-    public static void decode(Tree tree, Scanner scanner) {
+    private static String encodeLetter(Node node, char target, String path){
+        if (node == null) return null;
+        if (node.letter == target) return path;
 
-        try {
-            System.out.println("Digite o código morse: (utilize ' ' entre as letras e '/' entre palavras)");
-            String encodedMessage = scanner.nextLine().trim();
+        String left = encodeLetter(node.left, target, path + ".");
+        if (left != null) return left;
 
-            if (encodedMessage.isEmpty()) {
-                System.out.println("Entrada vazia. Tente novamente.");
-                return;
-            }
-
-            if (!encodedMessage.matches("^[.\\- /]+$")) {
-                System.out.println("A mensagem criptografada pode conter apenas caracteres de . e - e /.");
-                return;
-            }
-
-            StringBuilder result = new StringBuilder();
-            String[] words = encodedMessage.split("/");
-
-            for (String word : words){
-                String[] letters = word.split("\\s+");
-                for (String morseCode : letters) {
-                    char decoded = tree.search(morseCode);
-                    result.append(decoded);
-                }
-                result.append(" ");
-            }
-
-            System.out.println("Mensagem descriptografada: " + result.toString().trim());
-        } catch (IllegalArgumentException e) {
-            System.out.println("A operação não pode ser concluída: " + e.getMessage());
-        }
-
+        return encodeLetter(node.right, target, path + "-");
     }
 
-    // cheatcode
-//    private void insertAllLetters() {
-//        // Letras A até Z em Morse
-//        insert(".-", 'A');
-//        insert("-...", 'B');
-//        insert("-.-.", 'C');
-//        insert("-..", 'D');
-//        insert(".", 'E');
-//        insert("..-.", 'F');
-//        insert("--.", 'G');
-//        insert("....", 'H');
-//        insert("..", 'I');
-//        insert(".---", 'J');
-//        insert("-.-", 'K');
-//        insert(".-..", 'L');
-//        insert("--", 'M');
-//        insert("-.", 'N');
-//        insert("---", 'O');
-//        insert(".--.", 'P');
-//        insert("--.-", 'Q');
-//        insert(".-.", 'R');
-//        insert("...", 'S');
-//        insert("-", 'T');
-//        insert("..-", 'U');
-//        insert("...-", 'V');
+    public static void encode(Tree tree, Scanner scanner){
+        System.out.println("Escreva seu texto para codifica-lo: ");
+        String text = scanner.nextLine().toUpperCase();
+
+        StringBuilder morse = new StringBuilder();
+        for (char c : text.toCharArray()) {
+            if (c == ' '){
+                morse.append("  "); // separacao
+            } else {
+                String code = encodeLetter(tree.getRoot(), c, "");
+                if (code != null) {
+                    morse.append(code).append(" ");
+                } else {
+                    morse.append("?"); // nao encontrado
+                }
+            }
+        }
+        System.out.println("Resultado Decodificacao: " + morse.toString().trim());
+    }
 }
