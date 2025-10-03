@@ -108,34 +108,4 @@ public class Tree {
 
         decodeLettersRecursive(letters, letterIndex + 1, result);
     }
-
-    public void insertAllLetters() {
-        // Letras A-Z
-        insert('A', ".-");
-        insert('B', "-...");
-        insert('C', "-.-.");
-        insert('D', "-..");
-        insert('E', ".");
-        insert('F', "..-.");
-        insert('G', "--.");
-        insert('H', "....");
-        insert('I', "..");
-        insert('J', ".---");
-        insert('K', "-.-");
-        insert('L', ".-..");
-        insert('M', "--");
-        insert('N', "-.");
-        insert('O', "---");
-        insert('P', ".--.");
-        insert('Q', "--.-");
-        insert('R', ".-.");
-        insert('S', "...");
-        insert('T', "-");
-        insert('U', "..-");
-        insert('V', "...-");
-        insert('W', ".--");
-        insert('X', "-..-");
-        insert('Y', "-.--");
-        insert('Z', "--..");
-    }
 }

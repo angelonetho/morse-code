@@ -93,7 +93,33 @@ public class Operations {
     }
 
     public static void insertAll(Tree tree) {
-        tree.insertAllLetters();
+        tree.insert('A', ".-");
+        tree.insert('B', "-...");
+        tree.insert('C', "-.-.");
+        tree.insert('D', "-..");
+        tree.insert('E', ".");
+        tree.insert('F', "..-.");
+        tree.insert('G', "--.");
+        tree.insert('H', "....");
+        tree.insert('I', "..");
+        tree.insert('J', ".---");
+        tree.insert('K', "-.-");
+        tree.insert('L', ".-..");
+        tree.insert('M', "--");
+        tree.insert('N', "-.");
+        tree.insert('O', "---");
+        tree.insert('P', ".--.");
+        tree.insert('Q', "--.-");
+        tree.insert('R', ".-.");
+        tree.insert('S', "...");
+        tree.insert('T', "-");
+        tree.insert('U', "..-");
+        tree.insert('V', "...-");
+        tree.insert('W', ".--");
+        tree.insert('X', "-..-");
+        tree.insert('Y', "-.--");
+        tree.insert('Z', "--..");
         System.out.println("Todas as letras foram inseridas!");
     }
 }
+
