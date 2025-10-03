@@ -42,4 +42,34 @@ public class Operations {
             System.out.println("Erro: " + e.getMessage());
         }
     }
+
+    private static String encodeLetter(Node node, char target, String path){
+        if (node == null) return null;
+        if (node.letter == target) return path;
+
+        String left = encodeLetter(node.left, target, path + ".");
+        if (left != null) return left;
+
+        return encodeLetter(node.right, target, path + "-");
+    }
+
+    public static void encode(Tree tree, Scanner scanner){
+        System.out.println("Escreva seu texto para codifica-lo: ");
+        String text = scanner.nextLine().toUpperCase();
+
+        StringBuilder morse = new StringBuilder();
+        for (char c : text.toCharArray()) {
+            if (c == ' '){
+                morse.append("  "); // separacao
+            } else {
+                String code = encodeLetter(tree.getRoot(), c, "");
+                if (code != null) {
+                    morse.append(code).append(" ");
+                } else {
+                    morse.append("?"); // nao encontrado
+                }
+            }
+        }
+        System.out.println("Resultado Decodificacao: " + morse.toString().trim());
+    }
 }
