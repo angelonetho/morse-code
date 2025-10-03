@@ -108,6 +108,7 @@ public class Tree {
 
         decodeLettersRecursive(letters, letterIndex + 1, result);
     }
+
     public void encode(String[] words, int wordIndex, StringBuilder result) {
         if (wordIndex >= words.length) return;
 
@@ -126,12 +127,9 @@ public class Tree {
 
         char c = word.charAt(letterIndex);
         if (c != ' ') {
-            try {
-                String code = encodeLetter(root, c, "");
-                result.append(code).append(" ");
-            } catch (IllegalArgumentException e) {
-                result.append("? "); // letra não encontrada
-            }
+            String code = encodeLetter(root, c, "");
+            result.append(code).append(" ");
+
         }
 
         encodeLettersRecursive(word, letterIndex + 1, result); // próxima letra
@@ -145,9 +143,9 @@ public class Tree {
         try {
             String left = encodeLetter(node.left, targetLetter, path + ".");
             if (left != null) return left;
-        } catch (IllegalArgumentException ignored) {}
+        } catch (IllegalArgumentException ignored) {
+        }
 
-        String right = encodeLetter(node.right, targetLetter, path + "-");
-        return right;
+        return encodeLetter(node.right, targetLetter, path + "-");
     }
 }
