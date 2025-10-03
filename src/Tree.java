@@ -33,8 +33,7 @@ public class Tree {
 
             // Protege contra colisão caso já tenha uma letra no lugar
             if (current.letter != ' ' && current.letter != letter) {
-                throw new IllegalStateException(
-                        "Conflito: nó já contém '" + current.letter + "' para o código '" + morse + "'");
+                throw new IllegalStateException("Conflito: nó já contém '" + current.letter + "' para o código '" + morse + "'");
             }
 
             // Caso tudo de certo, inserimos a letra
@@ -80,5 +79,73 @@ public class Tree {
             throw new IllegalArgumentException("Símbolo morse inválido: '" + symbol + "' em " + morse);
         }
 
+    }
+
+    public void decode(String[] words, int wordIndex, StringBuilder result) {
+        if (wordIndex >= words.length) {
+            return;
+        }
+
+        String[] letters = words[wordIndex].split("\\s+");
+        decodeLettersRecursive(letters, 0, result);
+
+        if (wordIndex < words.length - 1) {
+            result.append(" ");
+        }
+
+        decode(words, wordIndex + 1, result);
+    }
+
+    private void decodeLettersRecursive(String[] letters, int letterIndex, StringBuilder result) {
+        if (letterIndex >= letters.length) {
+            return;
+        }
+
+        if (!letters[letterIndex].isEmpty()) {
+            char decoded = this.search(letters[letterIndex]);
+            result.append(decoded);
+        }
+
+        decodeLettersRecursive(letters, letterIndex + 1, result);
+    }
+
+    public void encode(String[] words, int wordIndex, StringBuilder result) {
+        if (wordIndex >= words.length) return;
+
+        encodeLettersRecursive(words[wordIndex], 0, result);
+
+        if (wordIndex < words.length - 1) {
+            result.append("/ ");
+        }
+
+        encode(words, wordIndex + 1, result); // próxima palavra
+    }
+
+    // Encode recursivo das letras de uma palavra
+    private void encodeLettersRecursive(String word, int letterIndex, StringBuilder result) {
+        if (letterIndex >= word.length()) return;
+
+        char c = word.charAt(letterIndex);
+        if (c != ' ') {
+            String code = encodeLetter(root, c, "");
+            result.append(code).append(" ");
+
+        }
+
+        encodeLettersRecursive(word, letterIndex + 1, result); // próxima letra
+    }
+
+    // Busca recursiva do código Morse de uma letra
+    private String encodeLetter(Node node, char targetLetter, String path) {
+        if (node == null) throw new IllegalArgumentException("Letra '" + targetLetter + "' não encontrada.");
+        if (node.letter == targetLetter) return path;
+
+        try {
+            String left = encodeLetter(node.left, targetLetter, path + ".");
+            if (left != null) return left;
+        } catch (IllegalArgumentException ignored) {
+        }
+
+        return encodeLetter(node.right, targetLetter, path + "-");
     }
 }
