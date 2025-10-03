@@ -39,7 +39,8 @@ public class Main {
 
                         break;
                     case 3:
-                        // Decodificar
+                        scanner.nextLine();
+                        Operations.decode(tree, scanner);
 
                         break;
                     case 4:

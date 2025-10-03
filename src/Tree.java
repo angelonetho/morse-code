@@ -65,7 +65,7 @@ public class Tree {
     }
 
     private char searchRecursive(Node current, String morse, int index) {
-        if (current == null) return ' ';
+        if (current == null) throw new IllegalArgumentException("Símbolo morse '" + morse + "' não encontrado.");
 
         if (index == morse.length()) {
             return current.letter;
