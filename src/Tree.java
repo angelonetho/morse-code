@@ -33,8 +33,7 @@ public class Tree {
 
             // Protege contra colisão caso já tenha uma letra no lugar
             if (current.letter != ' ' && current.letter != letter) {
-                throw new IllegalStateException(
-                        "Conflito: nó já contém '" + current.letter + "' para o código '" + morse + "'");
+                throw new IllegalStateException("Conflito: nó já contém '" + current.letter + "' para o código '" + morse + "'");
             }
 
             // Caso tudo de certo, inserimos a letra
@@ -65,7 +64,7 @@ public class Tree {
     }
 
     private char searchRecursive(Node current, String morse, int index) {
-        if (current == null) return ' ';
+        if (current == null) throw new IllegalArgumentException("Símbolo morse '" + morse + "' não encontrado.");
 
         if (index == morse.length()) {
             return current.letter;
@@ -81,6 +80,7 @@ public class Tree {
         }
 
     }
+
     public void insertAllLetters() {
         // Letras A-Z
         insert('A', ".-");
