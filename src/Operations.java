@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Operations {
@@ -48,49 +49,30 @@ public class Operations {
         }
     }
 
-    private static String encodeLetter(Node node, char targetLetter, String path) {
-        if (node == null) throw new IllegalArgumentException("Letra '" + targetLetter + "' não encontrada.");
-        if (node.letter == targetLetter) return path;
-
-        String left = encodeLetter(node.left, targetLetter, path + ".");
-        if (left != null) return left;
-
-        return encodeLetter(node.right, targetLetter, path + "-");
-    }
-
     public static void encode(Tree tree, Scanner scanner) {
-        System.out.println("Escreva seu texto para codifica-lo: ");
-
-        String messageToEncode = scanner.nextLine().trim().toUpperCase();
-
-        if (messageToEncode.isEmpty()) {
-            System.out.println("Entrada vazia. Tente novamente.");
-            return;
-        }
-
-        StringBuilder encodedMessage = new StringBuilder();
-
         try {
+            System.out.println("Escreva seu texto para codificá-lo: (espaço entre palavras)");
+            String messageToEncode = scanner.nextLine().trim().toUpperCase();
 
-            for (char c : messageToEncode.toCharArray()) {
-
-                if (c == ' ') {
-                    encodedMessage.append("  ");
-
-                } else {
-                    String code = encodeLetter(tree.getRoot(), c, ""); // Busca recursivamente a letra
-
-                    encodedMessage.append(code).append(" ");
-                }
+            if (messageToEncode.isEmpty()) {
+                System.out.println("Entrada vazia. Tente novamente.");
+                return;
             }
 
-            System.out.println("Resultado Decodificação: " + encodedMessage.toString().trim());
+            if (!messageToEncode.matches("^[A-Z ]+$")) {
+                System.out.println("A mensagem pode conter apenas letras e espaços.");
+                return;
+            }
 
+            StringBuilder result = new StringBuilder();
+            tree.encode(messageToEncode.split(" "), 0, result);
+
+            System.out.println("Mensagem codificada: " + result.toString().trim());
         } catch (IllegalArgumentException e) {
             System.out.println("A operação não pode ser concluída: " + e.getMessage());
         }
-
     }
+
 
     public static void insertAll(Tree tree) {
         tree.insert('A', ".-");
