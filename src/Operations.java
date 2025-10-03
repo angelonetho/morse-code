@@ -61,4 +61,30 @@ public class Operations {
 
         System.out.println("Texto: " + result.toString().trim());
     }
+
+    // cheatcode
+//    private void insertAllLetters() {
+//        // Letras A até Z em Morse
+//        insert(".-", 'A');
+//        insert("-...", 'B');
+//        insert("-.-.", 'C');
+//        insert("-..", 'D');
+//        insert(".", 'E');
+//        insert("..-.", 'F');
+//        insert("--.", 'G');
+//        insert("....", 'H');
+//        insert("..", 'I');
+//        insert(".---", 'J');
+//        insert("-.-", 'K');
+//        insert(".-..", 'L');
+//        insert("--", 'M');
+//        insert("-.", 'N');
+//        insert("---", 'O');
+//        insert(".--.", 'P');
+//        insert("--.-", 'Q');
+//        insert(".-.", 'R');
+//        insert("...", 'S');
+//        insert("-", 'T');
+//        insert("..-", 'U');
+//        insert("...-", 'V');
 }
