@@ -42,4 +42,23 @@ public class Operations {
             System.out.println("Erro: " + e.getMessage());
         }
     }
+
+    public static void decode(Tree tree, Scanner scanner){
+        System.out.println("Digite seu codigo morse! (use espaco entre as letras e / entre palavras!");
+        String morse = scanner.nextLine().trim();
+
+        StringBuilder result = new StringBuilder();
+        String[] words = morse.split("/");
+
+        for (String word : words){
+            String[] letters = word.split(" ");
+            for (String lettercode : letters){
+                char decoded = tree.search(lettercode);
+                result.append(decoded);
+            }
+            result.append(" ");
+        }
+
+        System.out.println("Texto: " + result.toString().trim());
+    }
 }
