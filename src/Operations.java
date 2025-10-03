@@ -43,23 +43,39 @@ public class Operations {
         }
     }
 
-    public static void decode(Tree tree, Scanner scanner){
-        System.out.println("Digite seu codigo morse! (use espaco entre as letras e / entre palavras!");
-        String morse = scanner.nextLine().trim();
+    public static void decode(Tree tree, Scanner scanner) {
 
-        StringBuilder result = new StringBuilder();
-        String[] words = morse.split("/");
+        try {
+            System.out.println("Digite o código morse: (utilize ' ' entre as letras e '/' entre palavras)");
+            String encodedMessage = scanner.nextLine().trim();
 
-        for (String word : words){
-            String[] letters = word.split(" ");
-            for (String lettercode : letters){
-                char decoded = tree.search(lettercode);
-                result.append(decoded);
+            if (encodedMessage.isEmpty()) {
+                System.out.println("Entrada vazia. Tente novamente.");
+                return;
             }
-            result.append(" ");
+
+            if (!encodedMessage.matches("^[.\\- /]+$")) {
+                System.out.println("A mensagem criptografada pode conter apenas caracteres de . e - e /.");
+                return;
+            }
+
+            StringBuilder result = new StringBuilder();
+            String[] words = encodedMessage.split("/");
+
+            for (String word : words){
+                String[] letters = word.split("\\s+");
+                for (String morseCode : letters) {
+                    char decoded = tree.search(morseCode);
+                    result.append(decoded);
+                }
+                result.append(" ");
+            }
+
+            System.out.println("Mensagem descriptografada: " + result.toString().trim());
+        } catch (IllegalArgumentException e) {
+            System.out.println("A operação não pode ser concluída: " + e.getMessage());
         }
 
-        System.out.println("Texto: " + result.toString().trim());
     }
 
     // cheatcode
