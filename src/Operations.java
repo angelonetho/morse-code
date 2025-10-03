@@ -24,25 +24,6 @@ public class Operations {
         javax.swing.SwingUtilities.invokeLater(() -> TreeVisualizer.show(tree));
     }
 
-    public static void search(Tree tree, Scanner scanner) {
-
-        try {
-            scanner.nextLine(); // Limpa o buffer do scanner
-            System.out.println("Digite o código morse para buscar:");
-            String morse = scanner.nextLine();
-
-            char result = tree.search(morse);
-            if (result == ' ') {
-                System.out.println("Nenhuma letra encontrada para o código: " + morse);
-            } else {
-                System.out.println("O código '" + morse + "' corresponde à letra: " + result);
-            }
-
-        } catch (IllegalArgumentException e) {
-            System.out.println("Erro: " + e.getMessage());
-        }
-    }
-
     public static void decode(Tree tree, Scanner scanner) {
 
         try {
