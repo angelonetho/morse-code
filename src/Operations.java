@@ -25,7 +25,6 @@ public class Operations {
     }
 
     public static void decode(Tree tree, Scanner scanner) {
-
         try {
             System.out.println("Digite o código morse: (utilize ' ' entre as letras e '/' entre palavras)");
             String encodedMessage = scanner.nextLine().trim();
@@ -41,15 +40,7 @@ public class Operations {
             }
 
             StringBuilder result = new StringBuilder();
-            String[] words = encodedMessage.split("/");
-
-            for (String word : words) {
-                String[] letters = word.split("\\s+");
-                for (String morseCode : letters) {
-                    char decoded = tree.search(morseCode);
-                    result.append(decoded);
-                }
-            }
+            tree.decode(encodedMessage.split("/"), 0, result);
 
             System.out.println("Mensagem descriptografada: " + result.toString().trim());
         } catch (IllegalArgumentException e) {

@@ -81,6 +81,34 @@ public class Tree {
 
     }
 
+    public void decode(String[] words, int wordIndex, StringBuilder result) {
+        if (wordIndex >= words.length) {
+            return;
+        }
+
+        String[] letters = words[wordIndex].split("\\s+");
+        decodeLettersRecursive(letters, 0, result);
+
+        if (wordIndex < words.length - 1) {
+            result.append(" ");
+        }
+
+        decode(words, wordIndex + 1, result);
+    }
+
+    private void decodeLettersRecursive(String[] letters, int letterIndex, StringBuilder result) {
+        if (letterIndex >= letters.length) {
+            return;
+        }
+
+        if (!letters[letterIndex].isEmpty()) {
+            char decoded = this.search(letters[letterIndex]);
+            result.append(decoded);
+        }
+
+        decodeLettersRecursive(letters, letterIndex + 1, result);
+    }
+
     public void insertAllLetters() {
         // Letras A-Z
         insert('A', ".-");
